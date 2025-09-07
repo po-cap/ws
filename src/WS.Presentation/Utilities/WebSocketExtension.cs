@@ -71,10 +71,7 @@ public static class WebSocketExtension
         }
         catch (Exception ex)
         {
-            await socket.CloseAsync(
-                WebSocketCloseStatus.InternalServerError,
-                $"{ex.Message}",
-                CancellationToken.None);
+            socket.Dispose();
         }
         finally
         {
