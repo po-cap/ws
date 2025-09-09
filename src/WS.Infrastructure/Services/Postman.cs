@@ -56,6 +56,7 @@ public class Postman : IPostman
     {
         // process - 把訊息加入資料庫
         await _msgRepository.AddAsync(message);
+        
         // process - 發送訓訊息
         await _subscriber.SendAsync(message);
     }

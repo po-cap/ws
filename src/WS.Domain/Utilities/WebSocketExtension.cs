@@ -17,18 +17,22 @@ public static class WebSocketExtension
         var body    = Encoding.UTF8.GetBytes(content);
         
         var buffer  = ArrayPool<byte>.Shared.Rent(body.Length);
+        
         try
         {
             // 將訊息放入剛剛租用的記憶體空間內
             body.CopyTo(buffer, 0);
             var segment = new ArraySegment<byte>(buffer, 0, body.Length);
 
-            // 傳送
-            await socket.SendAsync(
-                segment,
-                WebSocketMessageType.Text,
-                endOfMessage: true,
-                CancellationToken.None);
+            if (socket.State == WebSocketState.Open)
+            {
+                // 傳送
+                await socket.SendAsync(
+                    segment,
+                    WebSocketMessageType.Text,
+                    endOfMessage: true,
+                    CancellationToken.None);    
+            }
         }
         finally
         {
