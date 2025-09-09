@@ -124,8 +124,8 @@ public class MessageRepository : IMessageRepository
         if (!long.TryParse(entries.FirstOrDefault(x => x.Name == "timestamp").Value, out var timestamp))
             return null;
                 
-        var uri     = entries.FirstOrDefault(x => x.Name == "uri").ToString();
-        var content = entries.FirstOrDefault(x => x.Name == "content").ToString();
+        var uri     = entries.FirstOrDefault(x => x.Name == "uri").Value.ToString();
+        var content = entries.FirstOrDefault(x => x.Name == "content").Value.ToString();
         var type    = (MType)typeInt;
                 
         if(uri == null || content == null)
