@@ -59,8 +59,7 @@ public class MessageRepository : IMessageRepository
     /// <param name="message"></param>
     public async Task AddAsync(Message message)
     {
-        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        var key = $"message:{message.ReceiverId}:{timestamp}";
+        var key = $"message:{message.ReceiverId}:{message.Timestamp}";
         
         await _db.HashSetAsync(key, new HashEntry[]
         {
@@ -69,7 +68,7 @@ public class MessageRepository : IMessageRepository
             new ("receiver",  message.ReceiverId),
             new ("content",   message.Content),
             new ("type",      (int)message.MType),
-            new ("timestamp", timestamp)
+            new ("timestamp", message.Timestamp)
         });
 
         _db.KeyExpire(key, TimeSpan.FromDays(30));
